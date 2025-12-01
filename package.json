@@ -34,7 +34,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/seolcu/commit-renamer-mcp.git"
+    "url": "git+https://github.com/seolcu/commit-renamer-mcp.git"
   },
   "bugs": {
     "url": "https://github.com/seolcu/commit-renamer-mcp/issues"
