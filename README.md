@@ -17,12 +17,7 @@ npx @seolcu/commit-renamer-mcp
 
 ### One-Click Installation (Recommended)
 
-Click the button below to add this MCP server to your editor:
-
-[![Add to Claude Desktop](https://img.shields.io/badge/Add%20to-Claude%20Desktop-7C3AED)](https://github.com/seolcu/commit-renamer-mcp/blob/main/.github/mcp-settings.json)
-[![Add to Cursor](https://img.shields.io/badge/Add%20to-Cursor-000000)](https://github.com/seolcu/commit-renamer-mcp/blob/main/.github/mcp-settings.json)
-[![Add to VSCode](https://img.shields.io/badge/Add%20to-VSCode-007ACC)](https://github.com/seolcu/commit-renamer-mcp/blob/main/.github/mcp-settings.json)
-[![Add to Windsurf](https://img.shields.io/badge/Add%20to-Windsurf-00D9FF)](https://github.com/seolcu/commit-renamer-mcp/blob/main/.github/mcp-settings.json)
+[Install in VS Code](https://insiders.vscode.dev/redirect?url=vscode%3Amcp%2Finstall%3F%257B%2522name%2522%253A%2522commit-renamer%2522%252C%2522command%2522%253A%2522npx%2522%252C%2522args%2522%253A%255B%2522-y%2522%252C%2522%2540seolcu%252Fcommit-renamer-mcp%2522%255D%257D) [Install in VS Code Insiders](https://insiders.vscode.dev/redirect?url=vscode-insiders%3Amcp%2Finstall%3F%257B%2522name%2522%253A%2522commit-renamer%2522%252C%2522command%2522%253A%2522npx%2522%252C%2522args%2522%253A%255B%2522-y%2522%252C%2522%2540seolcu%252Fcommit-renamer-mcp%2522%255D%257D)
 
 ### Manual Installation
 
