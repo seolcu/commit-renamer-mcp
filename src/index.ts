@@ -93,6 +93,24 @@ server.registerTool(
 );
 
 server.registerTool(
+  'debug_cwd',
+  {
+    description: 'Debug tool to show current working directory of MCP server',
+    inputSchema: {},
+  },
+  async () => {
+    return {
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify({ cwd: process.cwd() }, null, 2),
+        },
+      ],
+    };
+  }
+);
+
+server.registerTool(
   'get_repo_status',
   {
     description: 'Get current repository status including branch, clean state, and rebase status',
