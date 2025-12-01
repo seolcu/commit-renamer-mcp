@@ -98,7 +98,7 @@ server.registerTool(
     description: 'Debug tool to show current working directory of MCP server',
     inputSchema: {},
   },
-  async () => {
+  () => {
     return {
       content: [
         {
