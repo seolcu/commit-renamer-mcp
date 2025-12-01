@@ -55,11 +55,14 @@ const server = new McpServer(
 server.registerTool(
   'list_commits',
   {
-    description: 'List recent commits in the repository',
+    description: 'List recent commits in the repository. Pass cwd parameter with workspace path.',
     inputSchema: {},
   },
   async (args: ToolArgs) => {
-    console.error('[DEBUG] list_commits called with:', JSON.stringify(args));
+    console.error('[DEBUG] list_commits called');
+    console.error('[DEBUG] args:', JSON.stringify(args, null, 2));
+    console.error('[DEBUG] typeof args:', typeof args);
+    console.error('[DEBUG] Object.keys(args):', Object.keys(args));
     const { count = 10, cwd } = args as ListCommitsArgs;
     try {
       const commits = await listCommits(typeof count === 'number' ? count : 10, cwd);
