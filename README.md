@@ -2,6 +2,46 @@
 
 AI 에이전트가 Git 커밋 메시지를 안전하게 수정할 수 있도록 도와주는 MCP (Model Context Protocol) 서버입니다.
 
+## 설치
+
+### NPM을 통한 설치 (권장)
+
+로컬 클론 없이 바로 사용할 수 있습니다:
+
+```bash
+npx @seolcu/commit-renamer-mcp
+```
+
+### Claude Desktop 설정
+
+`~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) 또는 `%APPDATA%/Claude/claude_desktop_config.json` (Windows)에 다음을 추가:
+
+```json
+{
+  "mcpServers": {
+    "commit-renamer": {
+      "command": "npx",
+      "args": ["-y", "@seolcu/commit-renamer-mcp"]
+    }
+  }
+}
+```
+
+### 로컬 설치
+
+```bash
+npm install -g @seolcu/commit-renamer-mcp
+```
+
+또는 직접 클론:
+
+```bash
+git clone https://github.com/seolcu/commit-renamer-mcp.git
+cd commit-renamer-mcp
+npm install
+npm run build
+```
+
 ## 기능
 
 이 MCP 서버는 다음 도구들을 제공합니다:
@@ -111,19 +151,10 @@ npm run build
 
 ## 사용법
 
-### Claude Desktop에서 사용
+### 명령줄에서 직접 실행
 
-`claude_desktop_config.json`에 다음 내용을 추가하세요:
-
-```json
-{
-  "mcpServers": {
-    "commit-renamer": {
-      "command": "node",
-      "args": ["/path/to/commit-renamer-mcp/dist/index.js"]
-    }
-  }
-}
+```bash
+npx @seolcu/commit-renamer-mcp
 ```
 
 ### 다른 MCP 클라이언트에서 사용

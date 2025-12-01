@@ -1,9 +1,12 @@
 {
-  "name": "commit-renamer-mcp",
-  "version": "0.1.0",
+  "name": "@seolcu/commit-renamer-mcp",
+  "version": "1.0.0",
   "description": "MCP server for renaming Git commit messages",
   "main": "dist/index.js",
   "type": "module",
+  "bin": {
+    "commit-renamer-mcp": "./dist/index.js"
+  },
   "scripts": {
     "build": "tsc",
     "dev": "tsx src/index.ts",
@@ -16,16 +19,35 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "typecheck": "tsc --noEmit",
-    "quality": "npm run typecheck && npm run lint && npm run format:check && npm run test"
+    "quality": "npm run typecheck && npm run lint && npm run format:check && npm run test",
+    "prepublishOnly": "npm run quality && npm run build"
   },
   "keywords": [
     "mcp",
     "git",
     "commit",
-    "rename"
+    "rename",
+    "model-context-protocol",
+    "ai-agent"
   ],
   "author": "seolcu",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seolcu/commit-renamer-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/seolcu/commit-renamer-mcp/issues"
+  },
+  "homepage": "https://github.com/seolcu/commit-renamer-mcp#readme",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.4",
     "zod": "^3.23.8"
