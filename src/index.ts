@@ -59,6 +59,7 @@ server.registerTool(
     inputSchema: {},
   },
   async (args: ToolArgs) => {
+    console.error('[DEBUG] list_commits called with:', JSON.stringify(args));
     const { count = 10, cwd } = args as ListCommitsArgs;
     try {
       const commits = await listCommits(typeof count === 'number' ? count : 10, cwd);
