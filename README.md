@@ -17,7 +17,10 @@ npx @seolcu/commit-renamer-mcp
 
 ### One-Click Installation (Recommended)
 
-[Install in VS Code](https://insiders.vscode.dev/redirect?url=vscode%3Amcp%2Finstall%3F%257B%2522name%2522%253A%2522commit-renamer%2522%252C%2522command%2522%253A%2522npx%2522%252C%2522args%2522%253A%255B%2522-y%2522%252C%2522%2540seolcu%252Fcommit-renamer-mcp%2522%255D%257D) [Install in VS Code Insiders](https://insiders.vscode.dev/redirect?url=vscode-insiders%3Amcp%2Finstall%3F%257B%2522name%2522%253A%2522commit-renamer%2522%252C%2522command%2522%253A%2522npx%2522%252C%2522args%2522%253A%255B%2522-y%2522%252C%2522%2540seolcu%252Fcommit-renamer-mcp%2522%255D%257D)
+[![Install in VS Code](https://img.shields.io/badge/Install%20in-VS%20Code-007ACC?style=for-the-badge&logo=visualstudiocode)](https://insiders.vscode.dev/redirect?url=vscode%3Amcp%2Finstall%3F%257B%2522name%2522%253A%2522commit-renamer%2522%252C%2522command%2522%253A%2522npx%2522%252C%2522args%2522%253A%255B%2522-y%2522%252C%2522%2540seolcu%252Fcommit-renamer-mcp%2522%255D%257D)
+[![Install in VS Code Insiders](https://img.shields.io/badge/Install%20in-VS%20Code%20Insiders-24BF60?style=for-the-badge&logo=visualstudiocode)](https://insiders.vscode.dev/redirect?url=vscode-insiders%3Amcp%2Finstall%3F%257B%2522name%2522%253A%2522commit-renamer%2522%252C%2522command%2522%253A%2522npx%2522%252C%2522args%2522%253A%255B%2522-y%2522%252C%2522%2540seolcu%252Fcommit-renamer-mcp%2522%255D%257D)
+[![Install in Cursor](https://img.shields.io/badge/Install%20in-Cursor-000000?style=for-the-badge)](https://www.cursor.com/mcp/install?name=commit-renamer&command=npx&args=-y,@seolcu/commit-renamer-mcp)
+[![Install in Windsurf](https://img.shields.io/badge/Install%20in-Windsurf-00D9FF?style=for-the-badge)](https://windsurf.ai/mcp/install?name=commit-renamer&command=npx&args=-y,@seolcu/commit-renamer-mcp)
 
 ### Manual Installation
 
