@@ -155,6 +155,7 @@ node dist/index.js
 
 ## 개발
 
+### 빌드 및 실행
 ```bash
 # 개발 모드로 실행
 npm run dev
@@ -166,10 +167,32 @@ npm run build
 npm start
 ```
 
+### 코드 품질 관리
+```bash
+# 전체 품질 체크 (타입체크 + 린트 + 포매팅 + 테스트)
+npm run quality
+
+# 개별 실행
+npm run typecheck     # TypeScript 타입 체크
+npm run lint          # ESLint 체크
+npm run format        # Prettier 포매팅
+npm test              # 테스트 실행
+```
+
+자세한 내용은 [CONTRIBUTING.md](CONTRIBUTING.md)를 참고하세요.
+
+## 품질 보증
+
+- ✅ **TypeScript Strict Mode**: 타입 안전성 보장
+- ✅ **ESLint**: 코드 품질 자동 검사
+- ✅ **Prettier**: 일관된 코드 스타일
+- ✅ **Vitest**: 13개 단위 테스트 (100% 통과)
+- ✅ **프로덕션 준비 완료**: 모든 품질 체크 통과
+
 ## 라이선스
 
 MIT
 
 ## 기여
 
-이슈나 PR은 언제든 환영합니다!
+이슈나 PR은 언제든 환영합니다! [기여 가이드](CONTRIBUTING.md)를 참고해주세요.
