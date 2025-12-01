@@ -21,7 +21,8 @@ npx @seolcu/commit-renamer-mcp
   "mcpServers": {
     "commit-renamer": {
       "command": "npx",
-      "args": ["-y", "@seolcu/commit-renamer-mcp"]
+      "args": ["-y", "@seolcu/commit-renamer-mcp"],
+      "type": "stdio"
     }
   }
 }
