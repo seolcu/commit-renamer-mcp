@@ -6,3 +6,5 @@ dist/
 *.swo
 .env
 test-repo/
+coverage/
+.vitest/

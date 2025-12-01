@@ -19,7 +19,10 @@ export interface RepoStatus {
 }
 
 export class GitError extends Error {
-  constructor(message: string, public readonly code?: string) {
+  constructor(
+    message: string,
+    public readonly code?: string
+  ) {
     super(message);
     this.name = 'GitError';
   }
@@ -28,7 +31,7 @@ export class GitError extends Error {
 export async function checkGitRepository(cwd?: string): Promise<void> {
   try {
     await execAsync('git rev-parse --git-dir', { cwd });
-  } catch (error) {
+  } catch {
     throw new GitError('Current directory is not a git repository');
   }
 }
@@ -36,8 +39,14 @@ export async function checkGitRepository(cwd?: string): Promise<void> {
 export async function getRepoStatus(cwd?: string): Promise<RepoStatus> {
   await checkGitRepository(cwd);
 
-  const { stdout: branchOut } = await execAsync('git rev-parse --abbrev-ref HEAD', { cwd });
-  const branch = branchOut.trim();
+  let branch = 'main';
+  try {
+    const { stdout: branchOut } = await execAsync('git rev-parse --abbrev-ref HEAD', { cwd });
+    branch = branchOut.trim();
+  } catch {
+    // If HEAD doesn't exist (empty repo), fallback to 'main'
+    branch = 'main';
+  }
 
   const { stdout: statusOut } = await execAsync('git status --porcelain', { cwd });
   const hasUncommittedChanges = statusOut.trim().length > 0;
@@ -61,19 +70,24 @@ export async function getRepoStatus(cwd?: string): Promise<RepoStatus> {
 export async function listCommits(count: number = 10, cwd?: string): Promise<CommitInfo[]> {
   await checkGitRepository(cwd);
 
-  const format = '%H%x1f%h%x1f%s%x1f%an%x1f%ai';
-  const { stdout } = await execAsync(`git log -n ${count} --format="${format}"`, { cwd });
+  try {
+    const format = '%H%x1f%h%x1f%s%x1f%an%x1f%ai';
+    const { stdout } = await execAsync(`git log -n ${count} --format="${format}"`, { cwd });
 
-  const commits: CommitInfo[] = [];
-  const lines = stdout.trim().split('\n');
+    const commits: CommitInfo[] = [];
+    const lines = stdout.trim().split('\n');
 
-  for (const line of lines) {
-    if (!line) continue;
-    const [hash, shortHash, message, author, date] = line.split('\x1f');
-    commits.push({ hash, shortHash, message, author, date });
+    for (const line of lines) {
+      if (!line) continue;
+      const [hash, shortHash, message, author, date] = line.split('\x1f');
+      commits.push({ hash, shortHash, message, author, date });
+    }
+
+    return commits;
+  } catch {
+    // If there are no commits yet, return empty array
+    return [];
   }
-
-  return commits;
 }
 
 export async function getCommitByHash(hash: string, cwd?: string): Promise<CommitInfo | null> {
@@ -154,9 +168,12 @@ export async function renameCommitMessage(
     await execAsync(`git commit --amend -m "${escapeShellArg(newMessage)}"`, { cwd });
     await execAsync('git rebase --continue', { cwd });
 
-    const { stdout: newHashOut } = await execAsync(`git log -n 1 --format="%H" --grep="${escapeShellArg(newMessage)}"`, {
-      cwd,
-    });
+    const { stdout: newHashOut } = await execAsync(
+      `git log -n 1 --format="%H" --grep="${escapeShellArg(newMessage)}"`,
+      {
+        cwd,
+      }
+    );
 
     return {
       success: true,

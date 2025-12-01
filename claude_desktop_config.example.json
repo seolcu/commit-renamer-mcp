@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "commit-renamer": {
+      "command": "node",
+      "args": ["/absolute/path/to/commit-renamer-mcp/dist/index.js"]
+    }
+  }
+}
