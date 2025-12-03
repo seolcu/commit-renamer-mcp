@@ -1,6 +1,6 @@
 {
   "name": "@seolcu/commit-renamer-mcp",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "MCP server for renaming Git commit messages",
   "main": "dist/index.js",
   "type": "module",
