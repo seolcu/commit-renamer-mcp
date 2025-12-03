@@ -49,7 +49,7 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.0.4",
+    "@modelcontextprotocol/sdk": "^1.17.0",
     "zod": "^3.25.76"
   },
   "devDependencies": {
