@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { z } from 'zod';
 import {
   listCommits,
   getRepoStatus,
@@ -52,26 +53,15 @@ const server = new McpServer(
   }
 );
 
-server.registerTool(
+server.tool(
   'list_commits',
+  'List recent commits in the repository. Pass cwd parameter with workspace path.',
   {
-    description: 'List recent commits in the repository. Pass cwd parameter with workspace path.',
-    inputSchema: {
-      type: 'object' as const,
-      properties: {
-        count: {
-          type: 'number',
-          description: 'Number of recent commits to list (default: 10)',
-        },
-        cwd: {
-          type: 'string',
-          description: 'Working directory path (default: current directory)',
-        },
-      },
-    } as any,
+    count: z.number().optional().describe('Number of recent commits to list (default: 10)'),
+    cwd: z.string().optional().describe('Working directory path (default: current directory)'),
   },
-  async (args: ToolArgs) => {
-    const { count = 10, cwd } = args as ListCommitsArgs;
+  async (args) => {
+    const { count = 10, cwd } = args;
     try {
       const commits = await listCommits(typeof count === 'number' ? count : 10, cwd);
       const output = {
@@ -104,15 +94,10 @@ server.registerTool(
   }
 );
 
-server.registerTool(
+server.tool(
   'debug_cwd',
-  {
-    description: 'Debug tool to show current working directory of MCP server',
-    inputSchema: {
-      type: 'object' as const,
-      properties: {},
-    } as any,
-  },
+  'Debug tool to show current working directory of MCP server',
+  {},
   () => {
     return {
       content: [
@@ -125,22 +110,14 @@ server.registerTool(
   }
 );
 
-server.registerTool(
+server.tool(
   'get_repo_status',
+  'Get current repository status including branch, clean state, and rebase status',
   {
-    description: 'Get current repository status including branch, clean state, and rebase status',
-    inputSchema: {
-      type: 'object' as const,
-      properties: {
-        cwd: {
-          type: 'string',
-          description: 'Working directory path (default: current directory)',
-        },
-      },
-    } as any,
+    cwd: z.string().optional().describe('Working directory path (default: current directory)'),
   },
-  async (args: ToolArgs) => {
-    const { cwd } = args as GetRepoStatusArgs;
+  async (args) => {
+    const { cwd } = args;
     try {
       const status = await getRepoStatus(cwd);
       const output = {
@@ -170,31 +147,16 @@ server.registerTool(
   }
 );
 
-server.registerTool(
+server.tool(
   'preview_rename',
+  'Preview what would change when renaming a commit message without actually applying the change',
   {
-    description: 'Preview what would change when renaming a commit message without actually applying the change',
-    inputSchema: {
-      type: 'object' as const,
-      properties: {
-        commit_hash: {
-          type: 'string',
-          description: 'The commit hash to rename',
-        },
-        new_message: {
-          type: 'string',
-          description: 'The new commit message',
-        },
-        cwd: {
-          type: 'string',
-          description: 'Working directory path (default: current directory)',
-        },
-      },
-      required: ['commit_hash', 'new_message'],
-    } as any,
+    commit_hash: z.string().describe('The commit hash to rename'),
+    new_message: z.string().describe('The new commit message'),
+    cwd: z.string().optional().describe('Working directory path (default: current directory)'),
   },
-  async (args: ToolArgs) => {
-    const { commit_hash, new_message, cwd } = args as PreviewRenameArgs;
+  async (args) => {
+    const { commit_hash, new_message, cwd } = args;
     try {
       const status = await getRepoStatus(cwd);
       const commit = await getCommitByHash(commit_hash, cwd);
@@ -254,35 +216,17 @@ server.registerTool(
   }
 );
 
-server.registerTool(
+server.tool(
   'rename_commit',
+  'Rename a commit message. WARNING: This rewrites git history. Use with caution on shared branches.',
   {
-    description: 'Rename a commit message. WARNING: This rewrites git history. Use with caution on shared branches.',
-    inputSchema: {
-      type: 'object' as const,
-      properties: {
-        commit_hash: {
-          type: 'string',
-          description: 'The commit hash to rename',
-        },
-        new_message: {
-          type: 'string',
-          description: 'The new commit message',
-        },
-        force: {
-          type: 'boolean',
-          description: 'Force rename even if commit is pushed to remote (default: false)',
-        },
-        cwd: {
-          type: 'string',
-          description: 'Working directory path (default: current directory)',
-        },
-      },
-      required: ['commit_hash', 'new_message'],
-    } as any,
+    commit_hash: z.string().describe('The commit hash to rename'),
+    new_message: z.string().describe('The new commit message'),
+    force: z.boolean().optional().describe('Force rename even if commit is pushed to remote (default: false)'),
+    cwd: z.string().optional().describe('Working directory path (default: current directory)'),
   },
-  async (args: ToolArgs) => {
-    const { commit_hash, new_message, force = false, cwd } = args as RenameCommitArgs;
+  async (args) => {
+    const { commit_hash, new_message, force = false, cwd } = args;
     try {
       if (!force) {
         const isPushed = await isCommitPushedToRemote(commit_hash, cwd);
@@ -328,22 +272,14 @@ server.registerTool(
   }
 );
 
-server.registerTool(
+server.tool(
   'undo_rename',
+  'Undo the last commit rename operation using git reflog. This can recover from mistakes.',
   {
-    description: 'Undo the last commit rename operation using git reflog. This can recover from mistakes.',
-    inputSchema: {
-      type: 'object' as const,
-      properties: {
-        cwd: {
-          type: 'string',
-          description: 'Working directory path (default: current directory)',
-        },
-      },
-    } as any,
+    cwd: z.string().optional().describe('Working directory path (default: current directory)'),
   },
-  async (args: ToolArgs) => {
-    const { cwd } = args as UndoRenameArgs;
+  async (args) => {
+    const { cwd } = args;
     try {
       const status = await getRepoStatus(cwd);
 
