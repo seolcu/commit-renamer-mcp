@@ -56,13 +56,21 @@ server.registerTool(
   'list_commits',
   {
     description: 'List recent commits in the repository. Pass cwd parameter with workspace path.',
-    inputSchema: {},
+    inputSchema: {
+      type: 'object' as const,
+      properties: {
+        count: {
+          type: 'number',
+          description: 'Number of recent commits to list (default: 10)',
+        },
+        cwd: {
+          type: 'string',
+          description: 'Working directory path (default: current directory)',
+        },
+      },
+    } as any,
   },
   async (args: ToolArgs) => {
-    console.error('[DEBUG] list_commits called');
-    console.error('[DEBUG] args:', JSON.stringify(args, null, 2));
-    console.error('[DEBUG] typeof args:', typeof args);
-    console.error('[DEBUG] Object.keys(args):', Object.keys(args));
     const { count = 10, cwd } = args as ListCommitsArgs;
     try {
       const commits = await listCommits(typeof count === 'number' ? count : 10, cwd);
@@ -79,7 +87,7 @@ server.registerTool(
       return {
         content: [
           {
-            type: 'text',
+            type: 'text' as const,
             text: JSON.stringify(output, null, 2),
           },
         ],
@@ -87,7 +95,7 @@ server.registerTool(
     } catch (error) {
       if (error instanceof GitError) {
         return {
-          content: [{ type: 'text', text: `Error: ${error.message}` }],
+          content: [{ type: 'text' as const, text: `Error: ${error.message}` }],
           isError: true,
         };
       }
@@ -100,13 +108,16 @@ server.registerTool(
   'debug_cwd',
   {
     description: 'Debug tool to show current working directory of MCP server',
-    inputSchema: {},
+    inputSchema: {
+      type: 'object' as const,
+      properties: {},
+    } as any,
   },
   () => {
     return {
       content: [
         {
-          type: 'text',
+          type: 'text' as const,
           text: JSON.stringify({ cwd: process.cwd() }, null, 2),
         },
       ],
@@ -118,7 +129,15 @@ server.registerTool(
   'get_repo_status',
   {
     description: 'Get current repository status including branch, clean state, and rebase status',
-    inputSchema: {},
+    inputSchema: {
+      type: 'object' as const,
+      properties: {
+        cwd: {
+          type: 'string',
+          description: 'Working directory path (default: current directory)',
+        },
+      },
+    } as any,
   },
   async (args: ToolArgs) => {
     const { cwd } = args as GetRepoStatusArgs;
@@ -134,7 +153,7 @@ server.registerTool(
       return {
         content: [
           {
-            type: 'text',
+            type: 'text' as const,
             text: JSON.stringify(output, null, 2),
           },
         ],
@@ -142,7 +161,7 @@ server.registerTool(
     } catch (error) {
       if (error instanceof GitError) {
         return {
-          content: [{ type: 'text', text: `Error: ${error.message}` }],
+          content: [{ type: 'text' as const, text: `Error: ${error.message}` }],
           isError: true,
         };
       }
@@ -155,7 +174,24 @@ server.registerTool(
   'preview_rename',
   {
     description: 'Preview what would change when renaming a commit message without actually applying the change',
-    inputSchema: {},
+    inputSchema: {
+      type: 'object' as const,
+      properties: {
+        commit_hash: {
+          type: 'string',
+          description: 'The commit hash to rename',
+        },
+        new_message: {
+          type: 'string',
+          description: 'The new commit message',
+        },
+        cwd: {
+          type: 'string',
+          description: 'Working directory path (default: current directory)',
+        },
+      },
+      required: ['commit_hash', 'new_message'],
+    } as any,
   },
   async (args: ToolArgs) => {
     const { commit_hash, new_message, cwd } = args as PreviewRenameArgs;
@@ -165,7 +201,7 @@ server.registerTool(
 
       if (!commit) {
         return {
-          content: [{ type: 'text', text: `Error: Commit ${commit_hash} not found` }],
+          content: [{ type: 'text' as const, text: `Error: Commit ${commit_hash} not found` }],
           isError: true,
         };
       }
@@ -201,7 +237,7 @@ server.registerTool(
       return {
         content: [
           {
-            type: 'text',
+            type: 'text' as const,
             text: JSON.stringify(output, null, 2),
           },
         ],
@@ -209,7 +245,7 @@ server.registerTool(
     } catch (error) {
       if (error instanceof GitError) {
         return {
-          content: [{ type: 'text', text: `Error: ${error.message}` }],
+          content: [{ type: 'text' as const, text: `Error: ${error.message}` }],
           isError: true,
         };
       }
@@ -222,7 +258,28 @@ server.registerTool(
   'rename_commit',
   {
     description: 'Rename a commit message. WARNING: This rewrites git history. Use with caution on shared branches.',
-    inputSchema: {},
+    inputSchema: {
+      type: 'object' as const,
+      properties: {
+        commit_hash: {
+          type: 'string',
+          description: 'The commit hash to rename',
+        },
+        new_message: {
+          type: 'string',
+          description: 'The new commit message',
+        },
+        force: {
+          type: 'boolean',
+          description: 'Force rename even if commit is pushed to remote (default: false)',
+        },
+        cwd: {
+          type: 'string',
+          description: 'Working directory path (default: current directory)',
+        },
+      },
+      required: ['commit_hash', 'new_message'],
+    } as any,
   },
   async (args: ToolArgs) => {
     const { commit_hash, new_message, force = false, cwd } = args as RenameCommitArgs;
@@ -233,7 +290,7 @@ server.registerTool(
           return {
             content: [
               {
-                type: 'text',
+                type: 'text' as const,
                 text: 'Error: This commit has been pushed to remote. Rewriting history can cause issues for collaborators. Use force=true to proceed anyway.',
               },
             ],
@@ -254,7 +311,7 @@ server.registerTool(
       return {
         content: [
           {
-            type: 'text',
+            type: 'text' as const,
             text: JSON.stringify(output, null, 2),
           },
         ],
@@ -262,7 +319,7 @@ server.registerTool(
     } catch (error) {
       if (error instanceof GitError) {
         return {
-          content: [{ type: 'text', text: `Error: ${error.message}` }],
+          content: [{ type: 'text' as const, text: `Error: ${error.message}` }],
           isError: true,
         };
       }
@@ -275,7 +332,15 @@ server.registerTool(
   'undo_rename',
   {
     description: 'Undo the last commit rename operation using git reflog. This can recover from mistakes.',
-    inputSchema: {},
+    inputSchema: {
+      type: 'object' as const,
+      properties: {
+        cwd: {
+          type: 'string',
+          description: 'Working directory path (default: current directory)',
+        },
+      },
+    } as any,
   },
   async (args: ToolArgs) => {
     const { cwd } = args as UndoRenameArgs;
@@ -286,7 +351,7 @@ server.registerTool(
         return {
           content: [
             {
-              type: 'text',
+              type: 'text' as const,
               text: 'Error: Working directory is not clean. Cannot safely undo.',
             },
           ],
@@ -308,7 +373,7 @@ server.registerTool(
       return {
         content: [
           {
-            type: 'text',
+            type: 'text' as const,
             text: JSON.stringify(output, null, 2),
           },
         ],
@@ -316,7 +381,7 @@ server.registerTool(
     } catch (error) {
       if (error instanceof GitError) {
         return {
-          content: [{ type: 'text', text: `Error: ${error.message}` }],
+          content: [{ type: 'text' as const, text: `Error: ${error.message}` }],
           isError: true,
         };
       }
