@@ -11,36 +11,6 @@ import {
   isCommitPushedToRemote,
 } from './git/operations.js';
 
-interface ToolArgs {
-  [key: string]: unknown;
-}
-
-interface ListCommitsArgs extends ToolArgs {
-  count?: number;
-  cwd?: string;
-}
-
-interface GetRepoStatusArgs extends ToolArgs {
-  cwd?: string;
-}
-
-interface PreviewRenameArgs extends ToolArgs {
-  commit_hash: string;
-  new_message: string;
-  cwd?: string;
-}
-
-interface RenameCommitArgs extends ToolArgs {
-  commit_hash: string;
-  new_message: string;
-  force?: boolean;
-  cwd?: string;
-}
-
-interface UndoRenameArgs extends ToolArgs {
-  cwd?: string;
-}
-
 const server = new McpServer(
   {
     name: 'commit-renamer-mcp',
@@ -94,21 +64,16 @@ server.tool(
   }
 );
 
-server.tool(
-  'debug_cwd',
-  'Debug tool to show current working directory of MCP server',
-  {},
-  () => {
-    return {
-      content: [
-        {
-          type: 'text' as const,
-          text: JSON.stringify({ cwd: process.cwd() }, null, 2),
-        },
-      ],
-    };
-  }
-);
+server.tool('debug_cwd', 'Debug tool to show current working directory of MCP server', {}, () => {
+  return {
+    content: [
+      {
+        type: 'text' as const,
+        text: JSON.stringify({ cwd: process.cwd() }, null, 2),
+      },
+    ],
+  };
+});
 
 server.tool(
   'get_repo_status',
